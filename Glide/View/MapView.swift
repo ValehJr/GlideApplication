@@ -10,16 +10,25 @@ import MapKit
 
 struct MapView: View {
     @State var locationManager = LocationManager()
+    @Namespace var mapScope
     var body: some View {
-        Map(position: $locationManager.cameraPosition) {
+        ZStack {
+            Map(position: $locationManager.cameraPosition,scope: mapScope){
+                UserAnnotation()
+            }
+            .overlay(alignment:.bottomTrailing) {
+                    MapUserLocationButton(scope: mapScope)
+                    .padding(.trailing)
+                
+            }
+            .buttonBorderShape(.circle)
+            .mapScope(mapScope)
+            .onAppear {
+                locationManager.checkIfLocationServicesAreEnabled()
+            }
+            .mapControlVisibility(.hidden)
             
-        }
-        .mapControls{
-            MapUserLocationButton()
-        }
-        .onAppear {
-            locationManager.checkIfLocationServicesAreEnabled()
-        }
+        }//Z
     }
 }
 

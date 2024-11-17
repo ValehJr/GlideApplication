@@ -9,26 +9,32 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    @State var locationManager = LocationManager()
+    @State var vm = MapViewModel()
     @Namespace var mapScope
+    
     var body: some View {
         ZStack {
-            Map(position: $locationManager.cameraPosition,scope: mapScope){
+            Map(position: $vm.locationManager.cameraPosition,scope: mapScope){
                 UserAnnotation()
-            }
+            }//Map
             .overlay(alignment:.bottomTrailing) {
-                    MapUserLocationButton(scope: mapScope)
+                MapUserLocationButton(scope: mapScope)
                     .padding(.trailing)
                 
             }
             .buttonBorderShape(.circle)
             .mapScope(mapScope)
             .onAppear {
-                locationManager.checkIfLocationServicesAreEnabled()
+                vm.locationManager.checkIfLocationServicesAreEnabled()
             }
             .mapControlVisibility(.hidden)
             
-        }//Z
+            VStack {
+                SearchFieldView(text: $vm.textToSearch,onSearch: vm.searchForLocation)
+                Spacer()
+            } //V
+            
+        } //Z
     }
 }
 

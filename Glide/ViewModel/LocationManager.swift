@@ -15,14 +15,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager?
     
-    var trueNorthOffset: Double = 0.0
-    
-    var cameraPosition = MapCameraPosition.region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.4093, longitude: 49.8671), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+    var cameraPosition = MapCameraPosition.region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.4093, longitude: 49.8671), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)))
     
     var userLocation: CLLocationCoordinate2D? {
             didSet {
                 if let userLocation = userLocation {
-                    cameraPosition = MapCameraPosition.region(MKCoordinateRegion(center: userLocation, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                    cameraPosition = MapCameraPosition.region(MKCoordinateRegion(center: userLocation, span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)))
                 }
             }
         }
@@ -67,11 +65,5 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         userLocation = location.coordinate
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        withAnimation {
-            self.trueNorthOffset = newHeading.trueHeading.rounded()
-        }
     }
 }

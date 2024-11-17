@@ -17,10 +17,10 @@ struct MapView: View {
             Map(position: $vm.locationManager.cameraPosition,scope: mapScope){
                 UserAnnotation()
             }//Map
+            .mapStyle(.standard)
             .overlay(alignment:.bottomTrailing) {
                 MapUserLocationButton(scope: mapScope)
                     .padding(.trailing)
-                
             }
             .buttonBorderShape(.circle)
             .mapScope(mapScope)
@@ -35,6 +35,9 @@ struct MapView: View {
             } //V
             
         } //Z
+        .onTapGesture {
+            vm.dismissKeyboard()
+        }
     }
 }
 

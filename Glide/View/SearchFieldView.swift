@@ -12,7 +12,6 @@ struct SearchFieldView: View {
     @Binding var text: String
     @State var textfieldFocused:Bool = false
     
-    
     var placeholder = "Where do you want to go?"
     var onSearch: () -> Void
     
@@ -41,7 +40,7 @@ struct SearchFieldView: View {
                     TextField("", text: $text)
                         .foregroundStyle(colorScheme == .dark ? .customWhite : .customOpenBlack)
                         .autocorrectionDisabled(true)
-                        .searchSuggestions(.hidden, for: .menu)
+                        .keyboardType(.alphabet)
                         .onSubmit {
                             onSearch()
                         }

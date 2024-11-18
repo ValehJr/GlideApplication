@@ -14,6 +14,28 @@ class MapViewModel {
     
     var locationManager = LocationManager()
     var textToSearch:String = ""
+    var keyboardHeight: CGFloat = 0
+    
+    func setupKeyboardHandling() {
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] notification in
+                if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                    withAnimation(.easeInOut(duration: 0.23)) {
+                        self?.keyboardHeight = keyboardFrame.height
+                    }
+                }
+            }
+            
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { [weak self] _ in
+                withAnimation(.easeInOut(duration: 0.23)) {
+                    self?.keyboardHeight = 0
+                }
+            }
+        }
+
+        func removeKeyboardObservers() {
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
     
     func searchForLocation() {
         let request = MKLocalSearch.Request()

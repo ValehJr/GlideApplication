@@ -11,6 +11,7 @@ import MapKit
 struct MapView: View {
     @State var vm = MapViewModel()
     @Namespace var mapScope
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         ZStack {
@@ -21,22 +22,31 @@ struct MapView: View {
             .overlay(alignment:.bottomTrailing) {
                 MapUserLocationButton(scope: mapScope)
                     .padding(.trailing)
+                    .padding(.bottom, max(vm.keyboardHeight,10))
             }
             .buttonBorderShape(.circle)
+            .ignoresSafeArea(.keyboard)
             .mapScope(mapScope)
             .onAppear {
                 vm.locationManager.checkIfLocationServicesAreEnabled()
+                vm.setupKeyboardHandling()
+            }
+            .onDisappear {
+                vm.removeKeyboardObservers()
             }
             .mapControlVisibility(.hidden)
             
             VStack {
                 SearchFieldView(text: $vm.textToSearch,onSearch: vm.searchForLocation)
+                    .focused($isFocused)
                 Spacer()
             } //V
             
         } //Z
         .onTapGesture {
-            vm.dismissKeyboard()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isFocused = false
+            }
         }
     }
 }

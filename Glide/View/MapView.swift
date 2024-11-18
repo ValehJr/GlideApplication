@@ -12,6 +12,7 @@ struct MapView: View {
     @State var vm = MapViewModel()
     @Namespace var mapScope
     @FocusState private var isFocused: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack {
@@ -20,11 +21,14 @@ struct MapView: View {
             }//Map
             .mapStyle(.standard)
             .overlay(alignment:.bottomTrailing) {
+                
                 MapUserLocationButton(scope: mapScope)
+                    .buttonBorderShape(.circle)
+                    .tint(colorScheme == .dark ? .customWhite : .backgroundBlack)
                     .padding(.trailing)
                     .padding(.bottom, max(vm.keyboardHeight,10))
+                
             }
-            .buttonBorderShape(.circle)
             .ignoresSafeArea(.keyboard)
             .mapScope(mapScope)
             .onAppear {

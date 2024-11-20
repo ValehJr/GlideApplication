@@ -17,6 +17,8 @@ class MapViewModel {
     var markerCoordinate: CLLocationCoordinate2D? = nil
     var searchResultName:String?
     var searchResult:MKMapItem?
+    var isEditingField: Bool = false
+    var showingAlert: Bool = false
     
     func setupKeyboardHandling() {
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] notification in

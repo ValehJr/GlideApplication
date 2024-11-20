@@ -52,6 +52,7 @@ struct MapView: View {
                 SearchFieldView(text: $vm.textToSearch,onSearch: vm.searchForLocation)
                     .focused($isFocused)
                 Spacer()
+                BottomView(isEditingField: vm.isEditingField, seachQuery: vm.textToSearch, showingAlert: vm.showingAlert)
             } //V
             
         } //Z

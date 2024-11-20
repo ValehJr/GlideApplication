@@ -24,7 +24,6 @@ struct SearchFieldView: View {
                 .shadow(radius: 3,x: 3, y: 3)
             
             HStack {
-                
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(colorScheme == .dark ? .customWhite : .customOpenBlack)
                     .padding(.leading,20)

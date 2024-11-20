@@ -11,10 +11,12 @@ import MapKit
 
 @Observable
 class MapViewModel {
-    
     var locationManager = LocationManager()
     var textToSearch:String = ""
     var keyboardHeight: CGFloat = 0
+    var markerCoordinate: CLLocationCoordinate2D? = nil
+    var searchResultName:String?
+    var searchResult:MKMapItem?
     
     func setupKeyboardHandling() {
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] notification in
@@ -50,16 +52,15 @@ class MapViewModel {
                 }
                 
                 print(firstResult)
+                self?.searchResultName = firstResult.name
+                self?.searchResult = firstResult
                 let coordinate = firstResult.placemark.coordinate
+                self?.markerCoordinate = coordinate
                 self?.locationManager.cameraPosition = .region(MKCoordinateRegion(
                     center: coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)
                 ))
             }
         }
-    }
-    
-    func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

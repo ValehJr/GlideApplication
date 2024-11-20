@@ -13,12 +13,20 @@ struct MapView: View {
     @Namespace var mapScope
     @FocusState private var isFocused: Bool
     @Environment(\.colorScheme) var colorScheme
+    @State private var selection: MapSelection<MKMapItem>?
     
     var body: some View {
         ZStack {
-            Map(position: $vm.locationManager.cameraPosition,scope: mapScope){
+            Map(position: $vm.locationManager.cameraPosition, selection: $selection,scope: mapScope){
                 UserAnnotation()
+                
+                if let searchResult = vm.searchResult {
+                    Marker(item: searchResult)
+                        .tag(MapSelection(searchResult))
+                        .mapItemDetailSelectionAccessory(.callout)
+                }
             }//Map
+            .mapFeatureSelectionAccessory(.callout)
             .mapStyle(.standard)
             .overlay(alignment:.bottomTrailing) {
                 
